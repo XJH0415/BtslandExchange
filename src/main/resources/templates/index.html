@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <script type="text/javascript" src="/static/js/jquery-3.2.1.js"></script>
+    <script type="text/javascript">
+        var user = "333";
+        function web () {
+            var webSocket = new WebSocket("ws://127.0.0.1:8080/ws");
+            webSocket.onopen = function(event){
+                alert("连接成功")
+                console.log(event);
+            };
+            webSocket.onerror = function(event){
+                console.log("连接失败");
+                console.log(event);
+            };
+            webSocket.onclose = function(event){
+                console.log("Socket连接断开");
+                console.log(event);
+            };
+            webSocket.onmessage = function(event){
+                //接受来自服务器的消息
+                //...
+            }
+        }
+
+    </script>
+</head>
+<body>
+<div id="tou"> webSocket及时聊天Demo程序</div>
+<div id="msg"></div>
+<input type="text" id="message"/>
+<button type="button" onclick="javaScript:web()"> 发送</button>
+</body>
+</html>
+
