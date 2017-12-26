@@ -95,6 +95,7 @@ public class UserServiceImpl implements UserService {
             userExample.createCriteria().andDealerIdEqualTo(user.getDealerId());
            if(userMapper.updateByExample(user,userExample)>0){
                logger.info(user.toString());
+               user=queryUserByDealerId(user.getDealerId());
                return user;
            }else {
                throw new UserException("更新失败！");
