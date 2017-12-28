@@ -106,8 +106,8 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping(value = "/registerAccount",method =RequestMethod.POST)
-    public User registerAccount(@RequestParam("accountName") String accountName,@RequestParam("password")String password){
-        return null;
+    public int registerAccount(@RequestParam("accountName") String accountName,@RequestParam("password")String password){
+        return userService.registerAccount(accountName,password);
     }
 
     /**
@@ -123,4 +123,14 @@ public class UserController {
         return userService.upAccount(dealerId,type);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/updateUserPassword",method =RequestMethod.POST)
+    public User updateUserPassword(@RequestParam("dealerId")String dealerId,@RequestParam("oldPassword")String oldPassword ,@RequestParam("newPassword")String newPassword){
+        return userService.updateUserPassword(dealerId,oldPassword,newPassword);
+    }
+    @ResponseBody
+    @RequestMapping(value = "/updateUser",method =RequestMethod.POST)
+    public int updateUser(@RequestParam("dealerId")String dealerId,@RequestParam("user")String user){
+        return userService.updateUser(dealerId,user);
+    }
 }

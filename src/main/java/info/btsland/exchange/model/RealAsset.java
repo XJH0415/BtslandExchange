@@ -13,6 +13,10 @@ public class RealAsset {
 
     private String depict;
 
+    private String name;
+
+    private Integer type;
+
     public Integer getId() {
         return id;
     }
@@ -59,5 +63,21 @@ public class RealAsset {
 
     public void setDepict(String depict) {
         this.depict = depict == null ? null : depict.trim();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

@@ -23,17 +23,17 @@ public class ChatController {
 
     @ResponseBody
     @RequestMapping(value="/queryChat",method = RequestMethod.POST)
-    List<Chat> queryChat(@RequestParam("from") String from,@RequestParam("to") String to){
+    public List<Chat> queryChat(@RequestParam("from") String from,@RequestParam("to") String to){
         return charService.queryChat(from,to);
     }
     @ResponseBody
     @RequestMapping(value="/sendChat",method = RequestMethod.POST)
-    int sendChat(@RequestParam("from")String from,@RequestParam("context")String context,@RequestParam("to")String to){
+    public int sendChat(@RequestParam("from")String from,@RequestParam("context")String context,@RequestParam("to")String to){
         return charService.sendChat(from,context,to);
     }
     @ResponseBody
     @RequestMapping(value="/deleteChar",method = RequestMethod.POST)
-    int deleteChar(@RequestParam("from")String from,@RequestParam("to")String to, @RequestParam("time")String time){
+    public int deleteChar(@RequestParam("from")String from,@RequestParam("to")String to, @RequestParam("time")String time){
         SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy/MM/dd hh:mm;ss");
         Date date=null;
         try {

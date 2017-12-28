@@ -2,19 +2,10 @@ package info.btsland.exchange.mapper;
 
 import info.btsland.exchange.model.RealAsset;
 import info.btsland.exchange.model.RealAssetExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.DeleteProvider;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
+
+import java.util.List;
 
 public interface RealAssetMapper {
     @SelectProvider(type=RealAssetSqlProvider.class, method="countByExample")
@@ -32,10 +23,12 @@ public interface RealAssetMapper {
     @Insert({
         "insert into real_asset (id, dealer_id, ",
         "real_asset_no, real_asset_type, ",
-        "is_available, depict)",
+        "is_available, depict, ",
+        "name, type)",
         "values (#{id,jdbcType=INTEGER}, #{dealerId,jdbcType=VARCHAR}, ",
         "#{realAssetNo,jdbcType=VARCHAR}, #{realAssetType,jdbcType=VARCHAR}, ",
-        "#{isAvailable,jdbcType=INTEGER}, #{depict,jdbcType=VARCHAR})"
+        "#{isAvailable,jdbcType=INTEGER}, #{depict,jdbcType=VARCHAR}, ",
+        "#{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER})"
     })
     int insert(RealAsset record);
 
@@ -44,28 +37,32 @@ public interface RealAssetMapper {
 
     @SelectProvider(type=RealAssetSqlProvider.class, method="selectByExample")
     @Results({
-        @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
-        @Result(column="dealer_id", property="dealerId", jdbcType=JdbcType.VARCHAR),
-        @Result(column="real_asset_no", property="realAssetNo", jdbcType=JdbcType.VARCHAR),
-        @Result(column="real_asset_type", property="realAssetType", jdbcType=JdbcType.VARCHAR),
-        @Result(column="is_available", property="isAvailable", jdbcType=JdbcType.INTEGER),
-        @Result(column="depict", property="depict", jdbcType=JdbcType.VARCHAR)
+        @Result(column="id", property="id", jdbcType= JdbcType.INTEGER, id=true),
+        @Result(column="dealer_id", property="dealerId", jdbcType= JdbcType.VARCHAR),
+        @Result(column="real_asset_no", property="realAssetNo", jdbcType= JdbcType.VARCHAR),
+        @Result(column="real_asset_type", property="realAssetType", jdbcType= JdbcType.VARCHAR),
+        @Result(column="is_available", property="isAvailable", jdbcType= JdbcType.INTEGER),
+        @Result(column="depict", property="depict", jdbcType= JdbcType.VARCHAR),
+        @Result(column="name", property="name", jdbcType= JdbcType.VARCHAR),
+        @Result(column="type", property="type", jdbcType= JdbcType.INTEGER)
     })
     List<RealAsset> selectByExample(RealAssetExample example);
 
     @Select({
         "select",
-        "id, dealer_id, real_asset_no, real_asset_type, is_available, depict",
+        "id, dealer_id, real_asset_no, real_asset_type, is_available, depict, name, type",
         "from real_asset",
         "where id = #{id,jdbcType=INTEGER}"
     })
     @Results({
-        @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
-        @Result(column="dealer_id", property="dealerId", jdbcType=JdbcType.VARCHAR),
-        @Result(column="real_asset_no", property="realAssetNo", jdbcType=JdbcType.VARCHAR),
-        @Result(column="real_asset_type", property="realAssetType", jdbcType=JdbcType.VARCHAR),
-        @Result(column="is_available", property="isAvailable", jdbcType=JdbcType.INTEGER),
-        @Result(column="depict", property="depict", jdbcType=JdbcType.VARCHAR)
+        @Result(column="id", property="id", jdbcType= JdbcType.INTEGER, id=true),
+        @Result(column="dealer_id", property="dealerId", jdbcType= JdbcType.VARCHAR),
+        @Result(column="real_asset_no", property="realAssetNo", jdbcType= JdbcType.VARCHAR),
+        @Result(column="real_asset_type", property="realAssetType", jdbcType= JdbcType.VARCHAR),
+        @Result(column="is_available", property="isAvailable", jdbcType= JdbcType.INTEGER),
+        @Result(column="depict", property="depict", jdbcType= JdbcType.VARCHAR),
+        @Result(column="name", property="name", jdbcType= JdbcType.VARCHAR),
+        @Result(column="type", property="type", jdbcType= JdbcType.INTEGER)
     })
     RealAsset selectByPrimaryKey(Integer id);
 
@@ -84,7 +81,9 @@ public interface RealAssetMapper {
           "real_asset_no = #{realAssetNo,jdbcType=VARCHAR},",
           "real_asset_type = #{realAssetType,jdbcType=VARCHAR},",
           "is_available = #{isAvailable,jdbcType=INTEGER},",
-          "depict = #{depict,jdbcType=VARCHAR}",
+          "depict = #{depict,jdbcType=VARCHAR},",
+          "name = #{name,jdbcType=VARCHAR},",
+          "type = #{type,jdbcType=INTEGER}",
         "where id = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(RealAsset record);

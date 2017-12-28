@@ -1,24 +1,14 @@
 package info.btsland.exchange.mapper;
 
-import static org.apache.ibatis.jdbc.SqlBuilder.BEGIN;
-import static org.apache.ibatis.jdbc.SqlBuilder.DELETE_FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.INSERT_INTO;
-import static org.apache.ibatis.jdbc.SqlBuilder.ORDER_BY;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT_DISTINCT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SET;
-import static org.apache.ibatis.jdbc.SqlBuilder.SQL;
-import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
-import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
-import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
-
 import info.btsland.exchange.model.RealAsset;
+import info.btsland.exchange.model.RealAssetExample;
 import info.btsland.exchange.model.RealAssetExample.Criteria;
 import info.btsland.exchange.model.RealAssetExample.Criterion;
-import info.btsland.exchange.model.RealAssetExample;
+
 import java.util.List;
 import java.util.Map;
+
+import static org.apache.ibatis.jdbc.SqlBuilder.*;
 
 public class RealAssetSqlProvider {
 
@@ -65,6 +55,14 @@ public class RealAssetSqlProvider {
             VALUES("depict", "#{depict,jdbcType=VARCHAR}");
         }
         
+        if (record.getName() != null) {
+            VALUES("name", "#{name,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getType() != null) {
+            VALUES("type", "#{type,jdbcType=INTEGER}");
+        }
+        
         return SQL();
     }
 
@@ -80,6 +78,8 @@ public class RealAssetSqlProvider {
         SELECT("real_asset_type");
         SELECT("is_available");
         SELECT("depict");
+        SELECT("name");
+        SELECT("type");
         FROM("real_asset");
         applyWhere(example, false);
         
@@ -121,6 +121,14 @@ public class RealAssetSqlProvider {
             SET("depict = #{record.depict,jdbcType=VARCHAR}");
         }
         
+        if (record.getName() != null) {
+            SET("name = #{record.name,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getType() != null) {
+            SET("type = #{record.type,jdbcType=INTEGER}");
+        }
+        
         applyWhere(example, true);
         return SQL();
     }
@@ -135,6 +143,8 @@ public class RealAssetSqlProvider {
         SET("real_asset_type = #{record.realAssetType,jdbcType=VARCHAR}");
         SET("is_available = #{record.isAvailable,jdbcType=INTEGER}");
         SET("depict = #{record.depict,jdbcType=VARCHAR}");
+        SET("name = #{record.name,jdbcType=VARCHAR}");
+        SET("type = #{record.type,jdbcType=INTEGER}");
         
         RealAssetExample example = (RealAssetExample) parameter.get("example");
         applyWhere(example, true);
@@ -163,6 +173,14 @@ public class RealAssetSqlProvider {
         
         if (record.getDepict() != null) {
             SET("depict = #{depict,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getName() != null) {
+            SET("name = #{name,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getType() != null) {
+            SET("type = #{type,jdbcType=INTEGER}");
         }
         
         WHERE("id = #{id,jdbcType=INTEGER}");

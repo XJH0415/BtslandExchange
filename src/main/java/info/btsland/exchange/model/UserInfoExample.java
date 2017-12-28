@@ -633,6 +633,76 @@ public class UserInfoExample {
             addCriterion("type not between", value1, value2, "type");
             return (Criteria) this;
         }
+
+        public Criteria andC2cAccountIsNull() {
+            addCriterion("c2c_account is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andC2cAccountIsNotNull() {
+            addCriterion("c2c_account is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andC2cAccountEqualTo(String value) {
+            addCriterion("c2c_account =", value, "c2cAccount");
+            return (Criteria) this;
+        }
+
+        public Criteria andC2cAccountNotEqualTo(String value) {
+            addCriterion("c2c_account <>", value, "c2cAccount");
+            return (Criteria) this;
+        }
+
+        public Criteria andC2cAccountGreaterThan(String value) {
+            addCriterion("c2c_account >", value, "c2cAccount");
+            return (Criteria) this;
+        }
+
+        public Criteria andC2cAccountGreaterThanOrEqualTo(String value) {
+            addCriterion("c2c_account >=", value, "c2cAccount");
+            return (Criteria) this;
+        }
+
+        public Criteria andC2cAccountLessThan(String value) {
+            addCriterion("c2c_account <", value, "c2cAccount");
+            return (Criteria) this;
+        }
+
+        public Criteria andC2cAccountLessThanOrEqualTo(String value) {
+            addCriterion("c2c_account <=", value, "c2cAccount");
+            return (Criteria) this;
+        }
+
+        public Criteria andC2cAccountLike(String value) {
+            addCriterion("c2c_account like", value, "c2cAccount");
+            return (Criteria) this;
+        }
+
+        public Criteria andC2cAccountNotLike(String value) {
+            addCriterion("c2c_account not like", value, "c2cAccount");
+            return (Criteria) this;
+        }
+
+        public Criteria andC2cAccountIn(List<String> values) {
+            addCriterion("c2c_account in", values, "c2cAccount");
+            return (Criteria) this;
+        }
+
+        public Criteria andC2cAccountNotIn(List<String> values) {
+            addCriterion("c2c_account not in", values, "c2cAccount");
+            return (Criteria) this;
+        }
+
+        public Criteria andC2cAccountBetween(String value1, String value2) {
+            addCriterion("c2c_account between", value1, value2, "c2cAccount");
+            return (Criteria) this;
+        }
+
+        public Criteria andC2cAccountNotBetween(String value1, String value2) {
+            addCriterion("c2c_account not between", value1, value2, "c2cAccount");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

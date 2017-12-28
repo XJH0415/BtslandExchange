@@ -23,10 +23,12 @@ public interface UserInfoMapper {
     @Insert({
         "insert into user_info (id, dealer_id, ",
         "name, sex, phone, ",
-        "card_no, level, type)",
+        "card_no, level, type, ",
+        "c2c_account)",
         "values (#{id,jdbcType=INTEGER}, #{dealerId,jdbcType=VARCHAR}, ",
         "#{name,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, ",
-        "#{cardNo,jdbcType=VARCHAR}, #{level,jdbcType=DOUBLE}, #{type,jdbcType=INTEGER})"
+        "#{cardNo,jdbcType=VARCHAR}, #{level,jdbcType=DOUBLE}, #{type,jdbcType=INTEGER}, ",
+        "#{c2cAccount,jdbcType=VARCHAR})"
     })
     int insert(UserInfo record);
 
@@ -42,13 +44,14 @@ public interface UserInfoMapper {
         @Result(column="phone", property="phone", jdbcType= JdbcType.VARCHAR),
         @Result(column="card_no", property="cardNo", jdbcType= JdbcType.VARCHAR),
         @Result(column="level", property="level", jdbcType= JdbcType.DOUBLE),
-        @Result(column="type", property="type", jdbcType= JdbcType.INTEGER)
+        @Result(column="type", property="type", jdbcType= JdbcType.INTEGER),
+        @Result(column="c2c_account", property="c2cAccount", jdbcType= JdbcType.VARCHAR)
     })
     List<UserInfo> selectByExample(UserInfoExample example);
 
     @Select({
         "select",
-        "id, dealer_id, name, sex, phone, card_no, level, type",
+        "id, dealer_id, name, sex, phone, card_no, level, type, c2c_account",
         "from user_info",
         "where id = #{id,jdbcType=INTEGER}"
     })
@@ -60,7 +63,8 @@ public interface UserInfoMapper {
         @Result(column="phone", property="phone", jdbcType= JdbcType.VARCHAR),
         @Result(column="card_no", property="cardNo", jdbcType= JdbcType.VARCHAR),
         @Result(column="level", property="level", jdbcType= JdbcType.DOUBLE),
-        @Result(column="type", property="type", jdbcType= JdbcType.INTEGER)
+        @Result(column="type", property="type", jdbcType= JdbcType.INTEGER),
+        @Result(column="c2c_account", property="c2cAccount", jdbcType= JdbcType.VARCHAR)
     })
     UserInfo selectByPrimaryKey(Integer id);
 
@@ -81,7 +85,8 @@ public interface UserInfoMapper {
           "phone = #{phone,jdbcType=VARCHAR},",
           "card_no = #{cardNo,jdbcType=VARCHAR},",
           "level = #{level,jdbcType=DOUBLE},",
-          "type = #{type,jdbcType=INTEGER}",
+          "type = #{type,jdbcType=INTEGER},",
+          "c2c_account = #{c2cAccount,jdbcType=VARCHAR}",
         "where id = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(UserInfo record);

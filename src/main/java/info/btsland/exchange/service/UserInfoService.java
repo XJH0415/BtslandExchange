@@ -12,7 +12,7 @@ public interface UserInfoService {
      * @param userInfo
      * @return
      */
-    UserInfo updateUserInfo(User user, UserInfo userInfo);
+    UserInfo updateUserInfo(String dealerId,String password, UserInfo userInfo);
 
     /**
      * 更新用户积分

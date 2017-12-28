@@ -45,7 +45,7 @@ public interface UserService {
      * @param password
      * @return
      */
-    User registerAccount(String accountName,String password);
+    int registerAccount(String accountName,String password);
 
     /**
      * 更新用户的类型
@@ -74,4 +74,7 @@ public interface UserService {
 
     List<User> queryAllDealer(int stat);
 
- }
+    User updateUserPassword(String dealerId,String oldPassword ,String newPassword);
+
+    int updateUser(String dealerId, String user);
+}

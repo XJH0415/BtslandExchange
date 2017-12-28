@@ -1,5 +1,6 @@
 package info.btsland.exchange.service.impl;
 
+import com.google.gson.Gson;
 import info.btsland.exchange.ExchangeApplication;
 import info.btsland.exchange.exception.UserException;
 import info.btsland.exchange.mapper.UserMapper;
@@ -41,7 +42,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User loginDealer(String dealerId, String password) {
-        return userMapper.selectByIdAndPwd(dealerId,password);
+        User user = userMapper.selectByIdAndPwd(dealerId,password);
+        if(user!=null){
+            user.userInfo=userInfoService.queryUserInfo(user.getDealerId());
+            user.realAssets=realAssetService.queryRealAsset(user.getDealerId());
+            user.userRecord=userRecordService.queryUserRecord(user.getDealerId());
+        }
+        return user;
     }
 
     @Override
@@ -51,10 +58,15 @@ public class UserServiceImpl implements UserService {
         criteria.andDealerIdEqualTo(dealerId);
         List<User> users = userMapper.selectByExample(userExample);
         logger.info("loginDealer:"+users.size()+"dealerId:"+dealerId);
-        User user=users.get(0);
-        user.userInfo=userInfoService.queryUserInfo(user.getDealerId());
-        user.realAssets=realAssetService.queryRealAsset(user.getDealerId());
-        user.userRecord=userRecordService.queryUserRecord(user.getDealerId());
+        User user=null;
+        if(users!=null&&users.size()>0){
+            user=users.get(0);
+            user.setPassword("");
+            user.userInfo=userInfoService.queryUserInfo(user.getDealerId());
+            user.realAssets=realAssetService.queryRealAsset(user.getDealerId());
+            user.userRecord=userRecordService.queryUserRecord(user.getDealerId());
+        }
+
         return user;
     }
     @Override
@@ -68,7 +80,8 @@ public class UserServiceImpl implements UserService {
         List<User> users =userMapper.selectByExample(userExample);
         User user=null;
         if(users!=null&&users.size()>0){
-            user = userMapper.selectByExample(userExample).get(0);
+            user = users.get(0);
+            user.setPassword("");
             user.userInfo=userInfoService.queryUserInfo(user.getDealerId());
             user.realAssets=realAssetService.queryRealAsset(user.getDealerId());
             user.userRecord=userRecordService.queryUserRecord(user.getDealerId());
@@ -105,7 +118,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerAccount(String accountName,String password) {
+    public int registerAccount(String accountName,String password) {
         User newUser=null;
         //数据校验
 
@@ -113,11 +126,11 @@ public class UserServiceImpl implements UserService {
         //写入数据
         User user=new User();
         user.setAccount(accountName);
+        user.setDealerId(accountName);
         user.setPassword(password);
-        if(userMapper.insert(user)>0) {
-            newUser = userMapper.selectByIdAndPwd(user.getDealerId(),user.getPassword());
-        }
-        return newUser;
+        user.setStat(-1);
+        user.setType(0);
+        return userMapper.insert(user);
     }
 
     @Override
@@ -174,6 +187,41 @@ public class UserServiceImpl implements UserService {
             }
             return users;
         }
+    }
+
+    @Override
+    public User updateUserPassword(String dealerId,String oldPassword ,String newPassword) {
+        User user = loginDealer(dealerId,oldPassword);
+        if(user!=null){
+            user.setPassword(newPassword);
+            UserExample userExample=new UserExample();
+            userExample.createCriteria().andDealerIdEqualTo(dealerId);
+            int a = userMapper.updateByExample(user,userExample);
+            if(a>0){
+                user=loginDealer(dealerId,newPassword);
+            }else {
+                user=null;
+            }
+        }
+        return user;
+    }
+
+    @Override
+    public int updateUser(String dealerId, String user) {
+        int a=0;
+        Gson gson=new Gson();
+        logger.info(dealerId+":"+user);
+        User user1=gson.fromJson(user,User.class);
+        logger.info(user1.toString());
+        if(user1!=null){
+            UserExample userExample=new UserExample();
+            userExample.createCriteria().andDealerIdEqualTo(dealerId);
+            if(userMapper.selectByExample(userExample)!=null){
+                a = userMapper.updateByExample(user1,userExample);
+            }
+        }
+        logger.info("a:"+a);
+        return a;
     }
 
 

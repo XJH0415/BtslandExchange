@@ -22,15 +22,15 @@ public class UserInfoServiceImpl implements UserInfoService {
     UserService userService;
 
     @Override
-    public UserInfo updateUserInfo(User user, UserInfo userInfo) {
+    public UserInfo updateUserInfo(String dealerId,String password, UserInfo userInfo) {
         //数据检验
 
         //查询数据
-        User user1 = userService.loginDealer(user.getDealerId(),user.getPassword());
+        User user1 = userService.loginDealer(dealerId,password);
         UserInfo newInfo=null;
         if(user1!=null){
             UserInfo oldInfo = queryUserInfo(user1.getDealerId());
-            if(user.getDealerId().equals(oldInfo.getDealerId())){
+            if(user1.getDealerId().equals(oldInfo.getDealerId())){
                 UserInfoExample updateExample=new UserInfoExample();
                 updateExample.createCriteria().andDealerIdEqualTo(oldInfo.getDealerId());
                 if(userInfoMapper.updateByExample(userInfo,updateExample)>0){

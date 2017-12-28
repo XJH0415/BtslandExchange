@@ -63,6 +63,10 @@ public class UserInfoSqlProvider {
             VALUES("type", "#{type,jdbcType=INTEGER}");
         }
         
+        if (record.getC2cAccount() != null) {
+            VALUES("c2c_account", "#{c2cAccount,jdbcType=VARCHAR}");
+        }
+        
         return SQL();
     }
 
@@ -80,6 +84,7 @@ public class UserInfoSqlProvider {
         SELECT("card_no");
         SELECT("level");
         SELECT("type");
+        SELECT("c2c_account");
         FROM("user_info");
         applyWhere(example, false);
         
@@ -129,6 +134,10 @@ public class UserInfoSqlProvider {
             SET("type = #{record.type,jdbcType=INTEGER}");
         }
         
+        if (record.getC2cAccount() != null) {
+            SET("c2c_account = #{record.c2cAccount,jdbcType=VARCHAR}");
+        }
+        
         applyWhere(example, true);
         return SQL();
     }
@@ -145,6 +154,7 @@ public class UserInfoSqlProvider {
         SET("card_no = #{record.cardNo,jdbcType=VARCHAR}");
         SET("level = #{record.level,jdbcType=DOUBLE}");
         SET("type = #{record.type,jdbcType=INTEGER}");
+        SET("c2c_account = #{record.c2cAccount,jdbcType=VARCHAR}");
         
         UserInfoExample example = (UserInfoExample) parameter.get("example");
         applyWhere(example, true);
@@ -181,6 +191,10 @@ public class UserInfoSqlProvider {
         
         if (record.getType() != null) {
             SET("type = #{type,jdbcType=INTEGER}");
+        }
+        
+        if (record.getC2cAccount() != null) {
+            SET("c2c_account = #{c2cAccount,jdbcType=VARCHAR}");
         }
         
         WHERE("id = #{id,jdbcType=INTEGER}");

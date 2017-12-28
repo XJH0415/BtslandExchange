@@ -123,15 +123,16 @@ public class UserRecordServiceImpl implements UserRecordService {
         double time=reckonNoteTime(dealerId);
 
         UserRecord newUserRecord=new UserRecord();
-        newUserRecord.setInClinchCount(inClinchCount);
-        newUserRecord.setInClinchTotal(inClinchTotal);
-        newUserRecord.setInHavingCount(inHavingCount);
-        newUserRecord.setOutHavingTotal(inHavingTotal);
-        newUserRecord.setOutClinchCount(outClinchCount);
-        newUserRecord.setInClinchTotal(outClinchTotal);
-        newUserRecord.setOutHavingCount(outHavingCount);
-        newUserRecord.setOutHavingTotal(outHavingTotal);
-        newUserRecord.setTime(time);
+        newUserRecord.setDealerId(dealerId);//设置承兑商
+        newUserRecord.setInClinchCount(inClinchCount);//设置充值完成单数
+        newUserRecord.setInClinchTotal(inClinchTotal);//设置提现完成总额
+        newUserRecord.setInHavingTotal(inHavingTotal);//设置正在充值总额
+        newUserRecord.setInHavingCount(inHavingCount);//设置正在充值单数
+        newUserRecord.setOutClinchTotal(outClinchTotal);//设置提现完成总额
+        newUserRecord.setOutClinchCount(outClinchCount);//设置提现完成单数
+        newUserRecord.setOutHavingCount(outHavingCount);//设置正在提现单数
+        newUserRecord.setOutHavingTotal(outHavingTotal);//设置正在提现总额
+        newUserRecord.setTime(time);//设置平均时间
         UserRecordExample recordExample=new UserRecordExample();
         recordExample.createCriteria().andDealerIdEqualTo(dealerId);
         UserRecord oldUserRecord = userRecordMapper.selectByDealerId(dealerId);

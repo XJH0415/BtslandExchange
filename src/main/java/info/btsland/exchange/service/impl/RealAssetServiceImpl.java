@@ -22,44 +22,81 @@ public class RealAssetServiceImpl implements RealAssetService {
     RealAssetMapper realAssetMapper;
 
     @Override
-    public RealAsset updateRealAsset(User user, RealAsset realAsset) {
-        //数据校验
-
-        //数据更新
-        User user1 = userService.loginDealer(user.getDealerId(),user.getPassword());
+    public int updateRealAsset(User user, RealAsset realAsset) {
         RealAsset realAsset1=null;
-        if(user1!=null){
-            realAsset.setDealerId(user1.getDealerId());
-            RealAssetExample updateExample=new RealAssetExample();
-            updateExample.createCriteria().andIdEqualTo(realAsset.getId()).andDealerIdEqualTo(realAsset.getDealerId());
-            if(realAssetMapper.updateByExample(realAsset,updateExample)>0){
-                realAsset1 = queryRealAsset(realAsset.getId(),realAsset.getDealerId());
+        int a=0;
+        if(realAsset.getType()==1){
+            User user1 = userService.loginDealer(user.getDealerId(),user.getPassword());
+            if(user1!=null){
+                realAsset.setDealerId(user1.getDealerId());
+                RealAssetExample query=new RealAssetExample();
+                query.createCriteria().andRealAssetNoEqualTo(realAsset.getRealAssetNo());
+                if(realAssetMapper.selectByExample(query)==null){
+                    a=realAssetMapper.insert(realAsset);
+                }else {
+                    RealAssetExample updateExample = new RealAssetExample();
+                    updateExample.createCriteria().andIdEqualTo(realAsset.getId()).andDealerIdEqualTo(realAsset.getDealerId());
+                    a = realAssetMapper.updateByExample(realAsset, updateExample);
+                }
+            }
+        }else {
+            User user1 = userService.loginAccount(user.getAccount());
+            if(user1!=null){
+                realAsset.setDealerId(user1.getDealerId());
+                realAsset.setIsAvailable(1);
+                if(realAsset.getId()==null){
+                    a = realAssetMapper.insert(realAsset);
+                }else {
+                    RealAssetExample updateExample = new RealAssetExample();
+                    updateExample.createCriteria().andIdEqualTo(realAsset.getId()).andDealerIdEqualTo(realAsset.getDealerId());
+                    a = realAssetMapper.updateByExample(realAsset, updateExample);
+                }
             }
         }
-        return realAsset1;
+        return a;
     }
 
     @Override
-    public int saveRealAsset(RealAsset realAsset) {
+    public int saveRealAsset(User user,RealAsset realAsset) {
         int i=0;
-        i = realAssetMapper.insert(realAsset);
+        if(realAsset.getType()==1){
+            User user1 = userService.loginDealer(user.getDealerId(),user.getPassword());
+            if(user1!=null){
+                i = realAssetMapper.insert(realAsset);
+            }
+        }else {
+            User user1=userService.loginAccount(user.getAccount());
+            if(user1!=null){
+                i = realAssetMapper.insert(realAsset);
+            }
+        }
         return i;
     }
 
     @Override
-    public RealAsset removeRealAsset(User user,RealAsset realAsset) {
-        User user1 = userService.loginDealer(user.getDealerId(),user.getPassword());
-        RealAsset realAsset1=null;
-        if(user1!=null){
-            realAsset.setDealerId(user1.getDealerId());
-            realAsset.setIsAvailable(0);
-            RealAssetExample removeExample=new RealAssetExample();
-            removeExample.createCriteria().andDealerIdEqualTo(realAsset.getDealerId()).andIdEqualTo(realAsset.getId());
-            if(realAssetMapper.updateByExample(realAsset,removeExample)>0){
-                realAsset1 = queryRealAsset(realAsset.getId(),realAsset.getDealerId());
+    public int removeRealAsset(User user,RealAsset realAsset) {
+        int a=0;
+        if(realAsset.getType()==1){
+            User user1 = userService.loginDealer(user.getDealerId(),user.getPassword());
+            if(user1!=null){
+                realAsset.setDealerId(user1.getDealerId());
+                realAsset.setIsAvailable(0);
+                RealAssetExample removeExample=new RealAssetExample();
+                removeExample.createCriteria().andDealerIdEqualTo(realAsset.getDealerId()).andIdEqualTo(realAsset.getId());
+                a=realAssetMapper.updateByExample(realAsset,removeExample);
+            }
+        }else {
+            User user1 = userService.loginAccount(user.getAccount());
+            if(user1!=null){
+                realAsset.setDealerId(user1.getDealerId());
+                realAsset.setIsAvailable(0);
+                RealAssetExample removeExample=new RealAssetExample();
+                removeExample.createCriteria().andDealerIdEqualTo(realAsset.getDealerId()).andIdEqualTo(realAsset.getId());
+                a=realAssetMapper.updateByExample(realAsset,removeExample);
             }
         }
-        return realAsset1;
+
+        return a;
     }
 
     @Override

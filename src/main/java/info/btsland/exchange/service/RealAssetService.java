@@ -9,11 +9,11 @@ import java.util.List;
  * Created by Administrator on 2017/12/11.
  */
 public interface RealAssetService {
-    RealAsset updateRealAsset(User user,RealAsset realAsset);
+    int updateRealAsset(User user,RealAsset realAsset);
 
-    int saveRealAsset(RealAsset realAsset);
+    int saveRealAsset(User user,RealAsset realAsset);
 
-    RealAsset removeRealAsset(User user,RealAsset realAsset);
+    int removeRealAsset(User user,RealAsset realAsset);
 
     List<RealAsset> queryRealAsset(String dealerId);
 

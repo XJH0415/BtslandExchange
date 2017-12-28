@@ -22,6 +22,11 @@ public class UserInfoController {
 
     @Autowired
     UserService userService;
+    @ResponseBody
+    @RequestMapping(value = "/updateUserInfo",method = RequestMethod.POST)
+    public UserInfo updateUserInfo(@RequestParam("dealerId")String dealerId,@RequestParam("password")String password, @RequestParam("userInfo")UserInfo userInfo){
+        return userInfoService.updateUserInfo(dealerId,password,userInfo);
+    }
 
     @ResponseBody
     @RequestMapping(value = "/queryUserInfoByPwd",method = RequestMethod.POST)

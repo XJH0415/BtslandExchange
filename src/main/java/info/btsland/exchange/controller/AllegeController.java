@@ -39,7 +39,7 @@ public class AllegeController {
      */
     @ResponseBody
     @RequestMapping(value = "updateAllege",method = RequestMethod.POST)
-    int updateAllege(@RequestParam("noteNo")String noteNo,@RequestParam("stat")int stat){
+    public int updateAllege(@RequestParam("noteNo")String noteNo,@RequestParam("stat")int stat){
         return allegeService.updateAllege(noteNo,stat);
     }
 
@@ -50,7 +50,7 @@ public class AllegeController {
      */
     @ResponseBody
     @RequestMapping(value = "queryAllAllegeByAccount",method = RequestMethod.POST)
-    List<Allege> queryAllAllege(@RequestParam("account")String account){
+    public List<Allege> queryAllAllege(@RequestParam("account")String account){
         return allegeService.queryAllAllege(account);
     }
 
@@ -61,7 +61,7 @@ public class AllegeController {
      */
     @ResponseBody
     @RequestMapping(value = "queryAllAllegeByDealerId",method = RequestMethod.POST)
-    List<Allege> queryAllAllegeByDealerId(@RequestParam("dealerId")String dealerId){
+    public List<Allege> queryAllAllegeByDealerId(@RequestParam("dealerId")String dealerId){
         return allegeService.queryAllAllegeByDealerId(dealerId);
     }
 
@@ -71,7 +71,7 @@ public class AllegeController {
      */
     @ResponseBody
     @RequestMapping(value = "queryAllAllege")
-    List<Allege> queryAllAllege(){
+    public List<Allege> queryAllAllege(){
         return allegeService.queryAllAllege();
     }
 
@@ -82,7 +82,7 @@ public class AllegeController {
      */
     @ResponseBody
     @RequestMapping(value = "queryAllAllegeByStat",method = RequestMethod.POST)
-    List<Allege> queryAllAllege(@RequestParam("stat")int stat){
+    public List<Allege> queryAllAllege(@RequestParam("stat")int stat){
         return allegeService.queryAllAllege(stat);
     }
 }

@@ -32,7 +32,7 @@ public class RemarkcodeUitil {
         Random ra =new Random();
         String s="";
         for(int i=0;i<6;i++){
-            s+=to52Jinzhi(ra.nextInt(52)+1);
+            s+=to52Jinzhi(ra.nextInt(52));
         }
         return s;
     }
