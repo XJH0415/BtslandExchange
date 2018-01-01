@@ -33,6 +33,7 @@ public class HelpController {
             for(int i=0;i<helps.size();i++){
                User user = userService.queryUserByDealerId( helps.get(i).getDealerId());
                if(user!=null){
+                   user.setPassword("");
                    users.add(user);
                }
             }

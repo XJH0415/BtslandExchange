@@ -2,7 +2,7 @@ package info.btsland.exchange.controller;
 
 
 import info.btsland.exchange.model.Chat;
-import info.btsland.exchange.service.CharService;
+import info.btsland.exchange.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/chat")
 public class ChatController {
     @Autowired
-    CharService charService ;
+    ChatService charService ;
 
     @ResponseBody
     @RequestMapping(value="/queryChat",method = RequestMethod.POST)

@@ -37,7 +37,7 @@ public interface UserService {
      * @param stat
      * @return
      */
-    User updateStat(String dealerId,String password,int stat) throws UserException;
+    User updateStat(String dealerId,int stat) throws UserException;
 
     /**
      * 创建承兑商

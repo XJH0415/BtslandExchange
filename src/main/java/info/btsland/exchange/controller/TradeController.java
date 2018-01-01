@@ -41,15 +41,22 @@ public class TradeController {
     }
     @ResponseBody
     @RequestMapping(value = "/saveNote",method = RequestMethod.POST)
-    public int saveNote(@RequestParam("account")String account,String noteJson){
+    public String saveNote(@RequestParam("account")String account,String noteJson){
         Gson gson=new Gson();
         Note note=gson.fromJson(noteJson,Note.class);
-        int a=0;
+        String noteNo="";
         try {
-            a = tradeService.saveNote(account,note);
+            noteNo = tradeService.saveNote(account,note);
         } catch (NoteException e) {
             e.printStackTrace();
         }
+        return noteNo;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/updateNoteReal",method = RequestMethod.POST)
+    public int updateNoteReal(@RequestParam("noteNo")String noteNo,@RequestParam("realNo")String realNo,@RequestParam("realType")String realType,@RequestParam("realDepict")String realDepict){
+        int a=0;
+        a = tradeService.updateNoteReal(noteNo,realNo,realType,realDepict);
         return a;
     }
     @ResponseBody
@@ -62,5 +69,10 @@ public class TradeController {
             e.printStackTrace();
         }
         return a;
+    }
+    @ResponseBody
+    @RequestMapping(value = "/updateNoteDepict",method = RequestMethod.POST)
+    public int updateNoteDepict(@RequestParam("noteNo")String noteNo,@RequestParam("depict")String depict){
+        return tradeService.updateNoteDepict(noteNo,depict);
     }
 }

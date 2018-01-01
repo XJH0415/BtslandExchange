@@ -26,17 +26,25 @@ public class RealAssetServiceImpl implements RealAssetService {
         RealAsset realAsset1=null;
         int a=0;
         if(realAsset.getType()==1){
-            User user1 = userService.loginDealer(user.getDealerId(),user.getPassword());
+            User user1 = userService.queryUserByDealerId(user.getDealerId());
             if(user1!=null){
                 realAsset.setDealerId(user1.getDealerId());
                 RealAssetExample query=new RealAssetExample();
-                query.createCriteria().andRealAssetNoEqualTo(realAsset.getRealAssetNo());
-                if(realAssetMapper.selectByExample(query)==null){
-                    a=realAssetMapper.insert(realAsset);
-                }else {
-                    RealAssetExample updateExample = new RealAssetExample();
-                    updateExample.createCriteria().andIdEqualTo(realAsset.getId()).andDealerIdEqualTo(realAsset.getDealerId());
-                    a = realAssetMapper.updateByExample(realAsset, updateExample);
+                query.createCriteria().andRealAssetNoEqualTo(realAsset.getRealAssetNo()).andTypeEqualTo(realAsset.getType());
+                List<RealAsset> realAsset2=realAssetMapper.selectByExample(query);
+                if(realAsset2!=null&&realAsset2.size()>0) {
+                    RealAsset realAsset3=realAsset2.get(0);
+                    if (realAsset3 == null) {
+                        a = realAssetMapper.insert(realAsset);
+                    }else {
+                        RealAssetExample updateExample = new RealAssetExample();
+                        updateExample.createCriteria().andIdEqualTo(realAsset2.get(0).getId()).andDealerIdEqualTo(realAsset.getDealerId());
+                        realAsset.setId(realAsset3.getId());
+                        a = realAssetMapper.updateByExample(realAsset, updateExample);
+                    }
+                } else {
+                    a = realAssetMapper.insert(realAsset);
+
                 }
             }
         }else {

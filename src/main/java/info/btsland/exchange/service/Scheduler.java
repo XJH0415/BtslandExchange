@@ -1,12 +1,18 @@
 package info.btsland.exchange.service;
 
 import info.btsland.exchange.ExchangeApplication;
+import info.btsland.exchange.model.User;
+import info.btsland.exchange.thread.BaseThread;
 import info.btsland.exchange.utils.NoteNoCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/12/14.
@@ -19,15 +25,18 @@ public class Scheduler {
     UserService userService;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Scheduled(fixedRate=30000) //每30秒执行一次
+    public Map<String,IThread> threadMap=new HashMap<>();
+
+    @Scheduled(fixedRate=60000) //每60秒执行一次
     public void statusCheck() {
-        logger.info("更新承兑商交易信息");
-        for(String key : ExchangeApplication.threadMap.keySet()){
-            ExchangeApplication.IThread iThread=ExchangeApplication.threadMap.get(key);
-            if(iThread.isRun()){
-                iThread.reStart();
-            }else {
+        List<User> userList = userService.queryAllDealer(0);
+        for(int i=0;i<userList.size();i++){
+            String dealerId=userList.get(i).getDealerId();
+            if(threadMap.get(dealerId)==null){
+                IThread iThread=new IThread(dealerId,dealerId);
+                iThread.setTime(10);
                 iThread.start();
+                threadMap.put(dealerId,iThread);
             }
         }
 
@@ -35,7 +44,6 @@ public class Scheduler {
 
     @Scheduled(cron="0 0 0 * * ?") //每天凌晨执行
     public void resetting() {
-        logger.info("重置流水号");
         NoteNoCode.reset();//重置流水号
     }
 
@@ -43,5 +51,21 @@ public class Scheduler {
     public void testTasks() {
     }
 
+
+    /**
+     * 更新用户记录线程
+     */
+    class IThread extends BaseThread {
+        private String dealerId;
+
+        public IThread(String dealerId,String threadName) {
+            super(threadName);
+            this.dealerId=dealerId;
+        }
+        @Override
+        protected void execute() {
+            userRecordService.saveOrUpdate(dealerId);
+        }
+    }
 
 }

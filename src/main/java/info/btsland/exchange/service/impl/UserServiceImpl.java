@@ -61,7 +61,6 @@ public class UserServiceImpl implements UserService {
         User user=null;
         if(users!=null&&users.size()>0){
             user=users.get(0);
-            user.setPassword("");
             user.userInfo=userInfoService.queryUserInfo(user.getDealerId());
             user.realAssets=realAssetService.queryRealAsset(user.getDealerId());
             user.userRecord=userRecordService.queryUserRecord(user.getDealerId());
@@ -81,7 +80,6 @@ public class UserServiceImpl implements UserService {
         User user=null;
         if(users!=null&&users.size()>0){
             user = users.get(0);
-            user.setPassword("");
             user.userInfo=userInfoService.queryUserInfo(user.getDealerId());
             user.realAssets=realAssetService.queryRealAsset(user.getDealerId());
             user.userRecord=userRecordService.queryUserRecord(user.getDealerId());
@@ -91,12 +89,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateStat(String dealerId,String password, int stat) throws UserException {
+    public User updateStat(String dealerId, int stat) throws UserException {
         //数据校验
 
         //查询用户
-        logger.info("dealerId:"+dealerId+",password:"+password+",stat:"+stat);
-        User user=loginDealer(dealerId,password);
+        logger.info("dealerId:"+dealerId+",stat:"+stat);
+        User user=queryUserByDealerId(dealerId);
         logger.info(""+user);
         //更改状态
         if(user!=null){
@@ -116,6 +114,7 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
 
     @Override
     public int registerAccount(String accountName,String password) {
@@ -214,10 +213,18 @@ public class UserServiceImpl implements UserService {
         User user1=gson.fromJson(user,User.class);
         logger.info(user1.toString());
         if(user1!=null){
+            User oldUser=loginAccount(dealerId);
+            oldUser.setBrokerageIn(user1.getBrokerageIn());
+            oldUser.setBrokerageOut(user1.getBrokerageOut());
+            oldUser.setDealerName(user1.getDealerName());
+            oldUser.setLowerLimitIn(user1.getLowerLimitIn());
+            oldUser.setLowerLimitOut(user1.getLowerLimitOut());
+            oldUser.setUpperLimitOut(user1.getUpperLimitOut());
+            oldUser.setDepict(user1.getDepict());
             UserExample userExample=new UserExample();
             userExample.createCriteria().andDealerIdEqualTo(dealerId);
             if(userMapper.selectByExample(userExample)!=null){
-                a = userMapper.updateByExample(user1,userExample);
+                a = userMapper.updateByExample(oldUser,userExample);
             }
         }
         logger.info("a:"+a);

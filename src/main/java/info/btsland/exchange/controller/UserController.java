@@ -11,6 +11,7 @@ import info.btsland.exchange.utils.UserTypeCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import sun.nio.cs.US_ASCII;
 
 import java.util.List;
 
@@ -39,7 +40,9 @@ public class UserController {
     @ResponseBody
     @RequestMapping(value = "/loginAccount",method =RequestMethod.POST )
     public User loginAccount(@RequestParam("dealerId") String dealerId){
-        return userService.loginAccount(dealerId);
+        User user = userService.loginAccount(dealerId);
+        user.setPassword("");
+        return user;
     }
     @ResponseBody
     @RequestMapping(value = "/loginAdmin", method = RequestMethod.POST)
@@ -54,7 +57,9 @@ public class UserController {
     @ResponseBody
     @RequestMapping(value = "/queryDealer",method =RequestMethod.POST)
     public User queryDealer(@RequestParam("dealerId")String dealerId){
-        return userService.queryUserByDealerId(dealerId);
+        User user = userService.queryUserByDealerId(dealerId);
+        user.setPassword("");
+        return user;
     }
     @ResponseBody
     @RequestMapping(value = "/queryAccount",method =RequestMethod.POST)
@@ -63,6 +68,7 @@ public class UserController {
         if(user!=null&&user.getType()== UserTypeCode.DEALER){
             user = userService.queryUserByDealerId(user.getDealerId());
         }
+        user.setPassword("");
         return user;
     }
     @ResponseBody
@@ -82,16 +88,15 @@ public class UserController {
     /**
      * 更新状态
      * @param dealerId
-     * @param password
      * @param stat
      * @return
      * @throws UserException
      */
     @ResponseBody
     @RequestMapping(value = "/updateStat",method =RequestMethod.POST)
-    public User updateStat(@RequestParam("dealerId")String dealerId,@RequestParam("password")String password,@RequestParam("stat")int stat) {
+    public User updateStat(@RequestParam("dealerId")String dealerId,@RequestParam("stat")int stat) {
         try {
-            return userService.updateStat(dealerId,password,stat);
+            return userService.updateStat(dealerId,stat);
         } catch (UserException e) {
             e.printStackTrace();
         }

@@ -8,6 +8,7 @@ import info.btsland.exchange.utils.NoteStatCode;
 import info.btsland.exchange.utils.RemarkcodeUitil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 
@@ -63,7 +64,7 @@ public class TradeService {
      * @param note
      * @return -1 表示用户不存在，-2 表示订单的用户名和用户的用户名不一致
      */
-    public int saveNote(String account,Note note) throws NoteException {
+    public String saveNote(String account,Note note) throws NoteException {
         if(account==null||account.equals("")){
             throw new NoteException("account is null");
         }
@@ -75,10 +76,10 @@ public class TradeService {
             if( note.getAccount().equals(user1.getAccount())){
                 return saveNote(note);
             }else {
-                return -2;
+                return "";
             }
         }else {
-            return -1;
+            return "";
         }
     }
 
@@ -87,14 +88,29 @@ public class TradeService {
      * @param note
      * @return
      */
-    private int saveNote(Note note) throws NoteException {
+    private String saveNote(Note note) throws NoteException {
         if(note==null){
             throw new NoteException("note is null");
         }
-        note.setNoteNo(NoteNoCode.createNoteNoCode());//设置流水号
-        return noteService.saveOrUpdate(note);
+        String noteNo=NoteNoCode.createNoteNoCode();
+        note.setNoteNo(noteNo);//设置流水号
+        int a =noteService.saveOrUpdate(note);
+        if(a>0){
+            return noteNo;
+        }else {
+            return "";
+        }
     }
+    public int updateNoteReal(@RequestParam("noteNo")String noteNo, @RequestParam("realNo")String realNo, @RequestParam("realType")String realType, @RequestParam("realDepict")String realDepict){
 
+        int a=0;
+        Note note=noteService.queryNote(noteNo);
+        note.setRealNo(realNo);
+        note.setRealType(realType);
+        note.setRealDepict(realDepict);
+        a = noteService.saveOrUpdate(note);
+        return a;
+    }
     /**
      * 更新状态
      * @param noteNo
@@ -143,5 +159,14 @@ public class TradeService {
             throw new NoteException("dealerId is null ");
         }
         return noteService.queryNoteCount(dealerId);
+    }
+
+    public int updateNoteDepict(String noteNo, String depict) {
+        Note note=noteService.queryNote(noteNo);
+        if(note==null){
+            return 0;
+        }
+        note.setDepict(depict);
+        return noteService.saveOrUpdate(note);
     }
 }

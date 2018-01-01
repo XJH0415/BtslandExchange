@@ -22,33 +22,11 @@ import java.util.*;
 public class ExchangeApplication {
 
     private static final Logger logger = LoggerFactory.getLogger(ExchangeApplication.class);
-	public static Map<String,IThread> threadMap=new HashMap<>();
 
-	private
-	@Autowired
-	static UserService userService;
 
-	@Autowired
-	static UserRecordService userRecordService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ExchangeApplication.class, args);
-		threadMap.put("UpdateUserRecordThread",new IThread("UpdateUserRecordThread"));
+	}
 
-	}
-	/**
-	 * 更新用户记录线程
-	 */
-	public static class IThread extends BaseThread {
-        public IThread(String threadName) {
-            super(threadName);
-        }
-        @Override
-        protected void execute() {
-            List<User> userList = userService.queryAllDealer(0);
-            for(int i=0;i<userList.size();i++){
-                userRecordService.saveOrUpdate(userList.get(i).getDealerId());
-            }
-        }
-	}
 }

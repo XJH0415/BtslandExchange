@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2017/12/27.
  */
 @Controller
-@RequestMapping("/RealAsset")
+@RequestMapping("/realAsset")
 public class RealAssetController {
     @Autowired
     RealAssetService realAssetService;
@@ -24,10 +26,9 @@ public class RealAssetController {
     UserService userService;
     @ResponseBody
     @RequestMapping(value = "/updateRealAsset",method = RequestMethod.POST)
-    public int updateRealAsset(@RequestParam("dealerId") String dealerId,@RequestParam("password") String password,@RequestParam("account") String account,@RequestParam("realAsset") String realAsset){
+    public int updateRealAsset(@RequestParam("dealerId") String dealerId,@RequestParam("account") String account,@RequestParam("realAsset") String realAsset){
         User user1 = new User() ;
         user1.setDealerId(dealerId);
-        user1.setPassword(password);
         user1.setAccount(account);
         Gson gson=new Gson();
         RealAsset realAsset1 =gson.fromJson(realAsset,RealAsset.class);
@@ -54,5 +55,10 @@ public class RealAssetController {
         Gson gson=new Gson();
         RealAsset realAsset1 =gson.fromJson(realAsset,RealAsset.class);
         return realAssetService.removeRealAsset(user1,realAsset1);
+    }
+    @ResponseBody
+    @RequestMapping(value = "/queryRealAsset",method = RequestMethod.POST)
+    public List<RealAsset> queryRealAsset(@RequestParam("dealerId")String dealerId){
+        return realAssetService.queryRealAsset(dealerId);
     }
 }

@@ -3,14 +3,14 @@ package info.btsland.exchange.service.impl;
 import info.btsland.exchange.mapper.ChatMapper;
 import info.btsland.exchange.model.Chat;
 import info.btsland.exchange.model.ChatExample;
-import info.btsland.exchange.service.CharService;
+import info.btsland.exchange.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 @Service
-public class ChatServiceImpl implements CharService {
+public class ChatServiceImpl implements ChatService {
     @Autowired
     ChatMapper chatMapper ;
     @Override
@@ -24,7 +24,9 @@ public class ChatServiceImpl implements CharService {
         chat.setToUser(to);
         chat.setFromUser(from);
         chat.setContext(context);
-        chat.setTime(new Date());
+        if(chat.getTime()==null){
+            chat.setTime(new Date());
+        }
         return chatMapper.insert(chat);
     }
 
@@ -37,5 +39,13 @@ public class ChatServiceImpl implements CharService {
         int a = chatMapper.deleteByExample(chatExample1);
         a+=chatMapper.deleteByExample(chatExample2);
         return a;
+    }
+
+    @Override
+    public int save(Chat chat) {
+        if(chat.getTime()==null){
+            chat.setTime(new Date());
+        }
+        return chatMapper.insert(chat);
     }
 }

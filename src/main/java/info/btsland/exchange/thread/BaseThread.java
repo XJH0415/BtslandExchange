@@ -26,6 +26,11 @@ public class BaseThread extends Thread {
      */
     private boolean isSleep = false;
     private int sleepTime;
+    private int time=3;
+
+    public void setTime(int time) {
+        this.time = time;
+    }
 
     public BaseThread() {
         super();
@@ -56,7 +61,7 @@ public class BaseThread extends Thread {
                 } else {
                     break;
                 }
-                sleep(256);//缓解CPU压力，即唤醒线程需要至多256ms  
+                sleep(time*1000);//缓解CPU压力，即唤醒线程需要至多256ms
             }
         }
         isRun = false;
