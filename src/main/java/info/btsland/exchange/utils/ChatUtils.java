@@ -27,6 +27,7 @@ public class ChatUtils {
 
     public static Chat toChat(String message){
         init();
+
         Chat chat=gson.fromJson(message,Chat.class);
         return chat;
     }

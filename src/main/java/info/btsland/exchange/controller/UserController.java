@@ -1,5 +1,6 @@
 package info.btsland.exchange.controller;
 
+import info.btsland.exchange.ExchangeApplication;
 import info.btsland.exchange.exception.UserException;
 import info.btsland.exchange.model.User;
 import info.btsland.exchange.model.UserInfo;
@@ -64,11 +65,19 @@ public class UserController {
     @ResponseBody
     @RequestMapping(value = "/queryAccount",method =RequestMethod.POST)
     public User queryAccount(@RequestParam("account")String account){
+        ExchangeApplication.logger.info("queryAccount  account:"+account);
         User user = userService.loginAccount(account);
-        if(user!=null&&user.getType()== UserTypeCode.DEALER){
-            user = userService.queryUserByDealerId(user.getDealerId());
+        if(user!=null){
+            if(user.getType()== UserTypeCode.DEALER) {
+                user = userService.queryUserByDealerId(user.getDealerId());
+            }
+        }else {
+            int a = userService.registerAccount(account,"");
+            if(a>0){
+                user = userService.loginAccount(account);
+            }
         }
-        user.setPassword("");
+
         return user;
     }
     @ResponseBody

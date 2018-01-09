@@ -9,7 +9,7 @@ import java.util.List;
  * Created by Administrator on 2017/12/11.
  */
 public interface RealAssetService {
-    int updateRealAsset(User user,RealAsset realAsset);
+    int updateRealAsset(String dealerId,RealAsset realAsset);
 
     int saveRealAsset(User user,RealAsset realAsset);
 

@@ -5,29 +5,29 @@ import java.util.List;
 public class User {
     private Integer id;
 
-    private String dealerId;
+    private String dealerId="";
 
-    private String dealerName;
+    private String dealerName="";
 
-    private String password;
+    private String password="";
 
-    private String account;
+    private String account="";
 
-    private Double brokerageIn;
+    private Double brokerageIn=0.0;
 
-    private Double brokerageOut;
+    private Double brokerageOut=0.0;
 
-    private String depict;
+    private String depict="";
 
     private Integer stat;
 
     private Integer type;
 
-    private Double lowerLimitIn;
+    private Double lowerLimitIn=0.0;
 
-    private Double upperLimitOut;
+    private Double upperLimitOut=0.0;
 
-    private Double lowerLimitOut;
+    private Double lowerLimitOut=0.0;
 
     public UserInfo userInfo;
 

@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public User loginAccount(String accountName) {
-        logger.info(accountName);
+        logger.info("loginAccount"+accountName);
         //数据校验
 
         //查询用户
@@ -84,7 +84,6 @@ public class UserServiceImpl implements UserService {
             user.realAssets=realAssetService.queryRealAsset(user.getDealerId());
             user.userRecord=userRecordService.queryUserRecord(user.getDealerId());
         }
-        logger.info(""+user);
         return user;
     }
 
@@ -173,19 +172,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> queryAllDealer(int stat) {
+        UserExample userExample=new UserExample();
+        List<User> users=null;
         if(stat==0){
-            return  userMapper.selectByExample(new UserExample());
+            userExample.createCriteria().andTypeEqualTo(UserTypeCode.DEALER);
         }else {
-            UserExample userExample=new UserExample();
             userExample.createCriteria().andStatEqualTo(stat).andTypeEqualTo(UserTypeCode.DEALER);
-            List<User> users=userMapper.selectByExample(userExample);
-            for(int i=0;i<users.size();i++){
-                users.get(i).userInfo=userInfoService.queryUserInfo(users.get(i).getDealerId());
-                users.get(i).realAssets=realAssetService.queryRealAsset(users.get(i).getDealerId());
-                users.get(i).userRecord=userRecordService.queryUserRecord(users.get(i).getDealerId());
-            }
-            return users;
         }
+        users=userMapper.selectByExample(userExample);
+        for(int i=0;i<users.size();i++){
+            users.get(i).userInfo=userInfoService.queryUserInfo(users.get(i).getDealerId());
+            users.get(i).realAssets=realAssetService.queryRealAsset(users.get(i).getDealerId());
+            users.get(i).userRecord=userRecordService.queryUserRecord(users.get(i).getDealerId());
+        }
+        return users;
     }
 
     @Override
@@ -207,13 +207,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int updateUser(String dealerId, String user) {
-        int a=0;
-        Gson gson=new Gson();
-        logger.info(dealerId+":"+user);
-        User user1=gson.fromJson(user,User.class);
+        int a = 0;
+        Gson gson = new Gson();
+        logger.info(dealerId + ":" + user);
+        User user1 = gson.fromJson(user, User.class);
         logger.info(user1.toString());
-        if(user1!=null){
-            User oldUser=loginAccount(dealerId);
+        if (user1 != null) {
+            User oldUser = queryUserByDealerId(dealerId);
+            if(oldUser==null){
+                return 0;
+            }
             oldUser.setBrokerageIn(user1.getBrokerageIn());
             oldUser.setBrokerageOut(user1.getBrokerageOut());
             oldUser.setDealerName(user1.getDealerName());
@@ -221,13 +224,14 @@ public class UserServiceImpl implements UserService {
             oldUser.setLowerLimitOut(user1.getLowerLimitOut());
             oldUser.setUpperLimitOut(user1.getUpperLimitOut());
             oldUser.setDepict(user1.getDepict());
-            UserExample userExample=new UserExample();
+            UserExample userExample = new UserExample();
             userExample.createCriteria().andDealerIdEqualTo(dealerId);
-            if(userMapper.selectByExample(userExample)!=null){
-                a = userMapper.updateByExample(oldUser,userExample);
+            if (this.userMapper.selectByExample(userExample) != null) {
+                a = this.userMapper.updateByExample(oldUser, userExample);
             }
         }
-        logger.info("a:"+a);
+
+        logger.info("a:" + a);
         return a;
     }
 

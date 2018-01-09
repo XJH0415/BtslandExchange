@@ -49,8 +49,11 @@ public class TradeService {
             note.setDealerId(dealerId);//设置兑商
             note.setAccount(account);//设置用户
             note.setAssetCoin(coin);//设置货币名称
-            note.setBrokerage(user.getBrokerageIn());//设置手续费
-            note.setBrokerage(user.getBrokerageOut());//设置手续费
+            if(coin.equals("CNY")){
+                note.setBrokerage(user.getBrokerageIn());//设置手续费
+            }else if(coin.equals("RMB")){
+                note.setBrokerage(user.getBrokerageOut());//设置手续费
+            }
             note.setRemarkCode(RemarkcodeUitil.createCode());//设置充值码
             note.setStatNo(NoteStatCode.ACCOUNT_FILLING);//设置状态
             note.setFlowPath(""+NoteStatCode.ACCOUNT_FILLING);

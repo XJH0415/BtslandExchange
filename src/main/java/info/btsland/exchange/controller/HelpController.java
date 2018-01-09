@@ -41,4 +41,8 @@ public class HelpController {
         return users;
 
     }
+
+    private void queryAllHavingNoteDealer(){
+
+    }
 }

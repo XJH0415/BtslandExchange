@@ -12,4 +12,8 @@ public interface ChatService {
     int deleteChar(String from,String to, Date time);
 
     int save(Chat chat);
+
+    List<String> queryDealerIdByFrom(String from);
+
+    List<String> queryDealerIdByTo(String to);
 }

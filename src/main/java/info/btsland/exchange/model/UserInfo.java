@@ -3,21 +3,21 @@ package info.btsland.exchange.model;
 public class UserInfo {
     private Integer id;
 
-    private String dealerId;
+    private String dealerId="";
 
-    private String name;
+    private String name="";
 
-    private String sex;
+    private String sex="";
 
-    private String phone;
+    private String phone="";
 
-    private String cardNo;
+    private String cardNo="";
 
-    private Double level;
+    private Double level=0.0;
 
     private Integer type;
 
-    private String c2cAccount;
+    private String c2cAccount="";
 
     public Integer getId() {
         return id;

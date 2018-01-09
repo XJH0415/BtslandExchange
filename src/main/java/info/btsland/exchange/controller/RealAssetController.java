@@ -26,13 +26,10 @@ public class RealAssetController {
     UserService userService;
     @ResponseBody
     @RequestMapping(value = "/updateRealAsset",method = RequestMethod.POST)
-    public int updateRealAsset(@RequestParam("dealerId") String dealerId,@RequestParam("account") String account,@RequestParam("realAsset") String realAsset){
-        User user1 = new User() ;
-        user1.setDealerId(dealerId);
-        user1.setAccount(account);
+    public int updateRealAsset(@RequestParam("dealerId") String dealerId,@RequestParam("realAsset") String realAsset){
         Gson gson=new Gson();
         RealAsset realAsset1 =gson.fromJson(realAsset,RealAsset.class);
-        return realAssetService.updateRealAsset(user1,realAsset1);
+        return realAssetService.updateRealAsset(dealerId,realAsset1);
     }
     @ResponseBody
     @RequestMapping(value = "/saveRealAsset",method = RequestMethod.POST)

@@ -5,23 +5,23 @@ import java.util.Date;
 public class Note {
     private Integer id;
 
-    private String dealerId;
+    private String dealerId="";
 
-    private String noteNo;
+    private String noteNo="";
 
-    private Double assetNum;
+    private Double assetNum=0.0;
 
-    private String assetCoin;
+    private String assetCoin="";
 
-    private Double brokerage;
+    private Double brokerage=0.0;
 
-    private String account;
+    private String account="";
 
-    private String realNo;
+    private String realNo="";
 
-    private String realType;
+    private String realType="";
 
-    private String realDepict;
+    private String realDepict="";
 
     private Date startTime;
 
@@ -31,17 +31,17 @@ public class Note {
 
     private Date endTime;
 
-    private String remarkCode;
+    private String remarkCode="";
 
     private Integer statNo;
 
-    private String depict;
+    private String depict="";
 
-    private String flowPath;
+    private String flowPath="";
 
-    private String dealerName;
+    private String dealerName="";
 
-    private String dealerPhone;
+    private String dealerPhone="";
 
     public String getDealerName() {
         return dealerName;

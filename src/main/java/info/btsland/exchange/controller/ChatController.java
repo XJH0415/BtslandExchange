@@ -12,19 +12,42 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/chat")
 public class ChatController {
     @Autowired
-    ChatService charService ;
+    ChatService charService;
 
     @ResponseBody
     @RequestMapping(value="/queryChat",method = RequestMethod.POST)
     public List<Chat> queryChat(@RequestParam("from") String from,@RequestParam("to") String to){
         return charService.queryChat(from,to);
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/queryDealer",method = RequestMethod.POST)
+    public List<String> queryDealer(@RequestParam("account") String account){
+        List<String> accounts1 = charService.queryDealerIdByFrom(account);
+        List<String> accounts2 = charService.queryDealerIdByTo(account);
+        List<String> listAll=new LinkedList<>();
+        listAll.addAll(accounts1);
+        listAll.addAll(accounts2);
+        listAll=new ArrayList<>(new LinkedHashSet<>(listAll));
+        return listAll;
+    }
+    @ResponseBody
+    @RequestMapping(value="/queryDealerIdByFrom",method = RequestMethod.POST)
+    public List<String> queryDealerIdByFrom(@RequestParam("from")String from){
+        List<String> strings = charService.queryDealerIdByFrom(from);
+        return strings;
+    }
+    @ResponseBody
+    @RequestMapping(value="/queryDealerIdByTo",method = RequestMethod.POST)
+    public List<String> queryDealerIdByTo(@RequestParam("to")String to){
+        List<String> strings = charService.queryDealerIdByTo(to);
+        return strings;
     }
     @ResponseBody
     @RequestMapping(value="/sendChat",method = RequestMethod.POST)
@@ -43,4 +66,5 @@ public class ChatController {
         }
         return charService.deleteChar(from,to,date);
     }
+
 }

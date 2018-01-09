@@ -3,25 +3,25 @@ package info.btsland.exchange.model;
 public class UserRecord {
     private Integer id;
 
-    private String dealerId;
+    private String dealerId="";
 
     private Integer inClinchCount;
 
     private Integer inHavingCount;
 
-    private Double inClinchTotal;
+    private Double inClinchTotal=0.0;
 
-    private Double inHavingTotal;
+    private Double inHavingTotal=0.0;
 
     private Integer outClinchCount;
 
     private Integer outHavingCount;
 
-    private Double outClinchTotal;
+    private Double outClinchTotal=0.0;
 
-    private Double outHavingTotal;
+    private Double outHavingTotal=0.0;
 
-    private Double time;
+    private Double time=0.0;
 
     public UserRecord(String dealerId, Integer inClinchCount, Integer inHavingCount, Double inClinchTotal, Double inHavingTotal, Integer outClinchCount, Integer outHavingCount, Double outClinchTotal, Double outHavingTotal, Double time) {
         this.dealerId = dealerId;

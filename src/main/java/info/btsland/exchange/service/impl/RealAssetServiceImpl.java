@@ -22,43 +22,23 @@ public class RealAssetServiceImpl implements RealAssetService {
     RealAssetMapper realAssetMapper;
 
     @Override
-    public int updateRealAsset(User user, RealAsset realAsset) {
-        RealAsset realAsset1=null;
+    public int updateRealAsset(String dealerId, RealAsset realAsset) {
         int a=0;
-        if(realAsset.getType()==1){
-            User user1 = userService.queryUserByDealerId(user.getDealerId());
-            if(user1!=null){
-                realAsset.setDealerId(user1.getDealerId());
-                RealAssetExample query=new RealAssetExample();
-                query.createCriteria().andRealAssetNoEqualTo(realAsset.getRealAssetNo()).andTypeEqualTo(realAsset.getType());
-                List<RealAsset> realAsset2=realAssetMapper.selectByExample(query);
-                if(realAsset2!=null&&realAsset2.size()>0) {
-                    RealAsset realAsset3=realAsset2.get(0);
-                    if (realAsset3 == null) {
-                        a = realAssetMapper.insert(realAsset);
-                    }else {
-                        RealAssetExample updateExample = new RealAssetExample();
-                        updateExample.createCriteria().andIdEqualTo(realAsset2.get(0).getId()).andDealerIdEqualTo(realAsset.getDealerId());
-                        realAsset.setId(realAsset3.getId());
-                        a = realAssetMapper.updateByExample(realAsset, updateExample);
-                    }
-                } else {
-                    a = realAssetMapper.insert(realAsset);
-
+        User user1 = userService.queryUserByDealerId(dealerId);
+        if(user1!=null){
+            realAsset.setDealerId(user1.getDealerId());
+            if(realAsset.getId()==null||realAsset.getId().equals("")){
+                RealAssetExample realAssetExample=new RealAssetExample();
+                realAssetExample.createCriteria().andDealerIdEqualTo(dealerId).andRealAssetNoEqualTo(realAsset.getRealAssetNo()).andRealAssetTypeEqualTo(realAsset.getRealAssetType());
+                List<RealAsset> realAssets =realAssetMapper.selectByExample(realAssetExample);
+                if(realAssets!=null&&realAssets.size()>0){
+                    return 0;
                 }
-            }
-        }else {
-            User user1 = userService.loginAccount(user.getAccount());
-            if(user1!=null){
-                realAsset.setDealerId(user1.getDealerId());
-                realAsset.setIsAvailable(1);
-                if(realAsset.getId()==null){
-                    a = realAssetMapper.insert(realAsset);
-                }else {
-                    RealAssetExample updateExample = new RealAssetExample();
-                    updateExample.createCriteria().andIdEqualTo(realAsset.getId()).andDealerIdEqualTo(realAsset.getDealerId());
-                    a = realAssetMapper.updateByExample(realAsset, updateExample);
-                }
+                a=realAssetMapper.insert(realAsset);
+            }else {
+                RealAssetExample updateExample = new RealAssetExample();
+                updateExample.createCriteria().andIdEqualTo(realAsset.getId()).andDealerIdEqualTo(realAsset.getDealerId());
+                a = realAssetMapper.updateByExample(realAsset, updateExample);
             }
         }
         return a;
