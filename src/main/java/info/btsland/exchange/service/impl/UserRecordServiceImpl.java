@@ -101,7 +101,11 @@ public class UserRecordServiceImpl implements UserRecordService {
         double size=notes.size();
         for(int i=0;i<notes.size();i++){
             Note note=notes.get(i);
-            allTime+=note.getEndTime().getTime()-note.getAccountReTime().getTime();
+            if(note.getAccountReTime()==null){
+                allTime+=note.getDealerReTime().getTime()-note.getAccountReTime().getTime();
+            }else {
+                allTime+=note.getDealerReTime().getTime() - note.getAccountReTime().getTime();
+            }
         }
         if(size!=0){
             time=allTime/size/1000/60;

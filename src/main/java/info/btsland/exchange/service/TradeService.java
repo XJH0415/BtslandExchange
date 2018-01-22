@@ -65,7 +65,7 @@ public class TradeService {
      * 保存数据
      * @param account
      * @param note
-     * @return -1 表示用户不存在，-2 表示订单的用户名和用户的用户名不一致
+     * @return
      */
     public String saveNote(String account,Note note) throws NoteException {
         if(account==null||account.equals("")){
@@ -75,6 +75,15 @@ public class TradeService {
             throw new NoteException("note is null");
         }
         User user1 = userService.loginAccount(account);
+        User dealer = userService.queryUserByDealerId(note.getDealerId());
+        if(dealer==null){
+            return "";
+        }
+        if(note.getAssetCoin().equals("RMB")) {
+            if(note.getAssetNum()>dealer.getUpperLimitOut()){
+                return "";
+            }
+        }
         if(user1!=null){
             if( note.getAccount().equals(user1.getAccount())){
                 return saveNote(note);
@@ -95,6 +104,7 @@ public class TradeService {
         if(note==null){
             throw new NoteException("note is null");
         }
+
         String noteNo=NoteNoCode.createNoteNoCode();
         note.setNoteNo(noteNo);//设置流水号
         int a =noteService.saveOrUpdate(note);

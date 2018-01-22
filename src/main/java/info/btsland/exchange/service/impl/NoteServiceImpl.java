@@ -3,11 +3,14 @@ package info.btsland.exchange.service.impl;
 import info.btsland.exchange.mapper.NoteMapper;
 import info.btsland.exchange.model.Note;
 import info.btsland.exchange.model.NoteExample;
+import info.btsland.exchange.model.User;
 import info.btsland.exchange.model.UserInfo;
 import info.btsland.exchange.service.NoteService;
 import info.btsland.exchange.service.UserInfoService;
+import info.btsland.exchange.service.UserService;
 import info.btsland.exchange.utils.NoteNoCode;
 import info.btsland.exchange.utils.NoteStatCode;
+import info.btsland.exchange.utils.UserStatCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +27,8 @@ public class NoteServiceImpl implements NoteService {
     NoteMapper noteMapper;
     @Autowired
     UserInfoService userInfoService;
+    @Autowired
+    UserService userService;
 
     @Override
     public List<Note> queryAllHavingNote(String dealerId) {
@@ -46,7 +51,6 @@ public class NoteServiceImpl implements NoteService {
         integers.add(NoteStatCode.ADMIN_CONFIRMED);
         integers.add(NoteStatCode.TIMEOUT);
         integers.add(NoteStatCode.CANCELLED);
-        integers.add(NoteStatCode.ACCOUNT_FILLING);
         noteExample.createCriteria().andDealerIdEqualTo(dealerId).andStatNoNotIn(integers).andAssetCoinEqualTo(coin);
         return noteMapper.selectByExample(noteExample);
     }
@@ -98,6 +102,11 @@ public class NoteServiceImpl implements NoteService {
             note.setFlowPath(note.getFlowPath()+"-"+ NoteStatCode.ACCOUNT_TRANSFERRING);
             if(isExist(note.getRemarkCode())){
                 return -1;
+            }
+            User user=userService.queryUserByDealerId(note.getDealerId());
+
+            if(user.getStat()!= UserStatCode.ONLINE){
+                return -2;
             }
             return noteMapper.insert(note);//保存
         }else {

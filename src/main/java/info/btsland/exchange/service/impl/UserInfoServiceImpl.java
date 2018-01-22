@@ -22,11 +22,11 @@ public class UserInfoServiceImpl implements UserInfoService {
     UserService userService;
 
     @Override
-    public UserInfo updateUserInfo(String dealerId,String password, UserInfo userInfo) {
+    public UserInfo updateUserInfo(String dealerId, UserInfo userInfo) {
         //数据检验
 
         //查询数据
-        User user1 = userService.loginDealer(dealerId,password);
+        User user1 = userService.queryUserByDealerId(dealerId);
         UserInfo newInfo=null;
         if(user1!=null){
             UserInfo oldInfo = queryUserInfo(user1.getDealerId());

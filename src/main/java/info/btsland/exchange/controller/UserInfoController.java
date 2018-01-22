@@ -1,5 +1,8 @@
 package info.btsland.exchange.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import info.btsland.exchange.model.User;
 import info.btsland.exchange.model.UserInfo;
 import info.btsland.exchange.service.UserInfoService;
@@ -24,8 +27,11 @@ public class UserInfoController {
     UserService userService;
     @ResponseBody
     @RequestMapping(value = "/updateUserInfo",method = RequestMethod.POST)
-    public UserInfo updateUserInfo(@RequestParam("dealerId")String dealerId,@RequestParam("password")String password, @RequestParam("userInfo")UserInfo userInfo){
-        return userInfoService.updateUserInfo(dealerId,password,userInfo);
+    public UserInfo updateUserInfo(@RequestParam("dealerId")String dealerId, @RequestParam("userInfo")String userInfo){
+        GsonBuilder gsonBuilder=new GsonBuilder();
+        Gson gson=gsonBuilder.create();
+        UserInfo userInfo1 = gson.fromJson(userInfo,new TypeToken<UserInfo>(){}.getType());
+        return userInfoService.updateUserInfo(dealerId,userInfo1);
     }
 
     @ResponseBody

@@ -21,9 +21,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
-
+@Service
 @ServerEndpoint("/ws/{userId}")
-@Controller
 public class MWebSocket {
 
     ChatService chatService;
@@ -66,7 +65,7 @@ public class MWebSocket {
             e.printStackTrace();
         }
         String finalText = text;
-        new Thread(new Runnable() {
+        new Thread(new Runnable(){
             @Override
             public void run() {
                 Chat chat=ChatUtils.toChat(finalText);
